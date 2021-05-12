@@ -1,0 +1,16 @@
+.footer {
+  height: 5rem;
+  font-size: 1.6rem;
+  background-color: #101d2c;
+}
+
+.footer p {
+  line-height: 3;
+  text-align: center;
+  color: orangered;
+}
+
+.footer__icon {
+  margin-left: 1rem;
+  color: orangered;
+}
