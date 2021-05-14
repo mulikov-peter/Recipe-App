@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Select from 'react-select';
-import Context from '../../context';
+// import Context from '../../context';
+import { AppContext } from '../../AppContext';
 
 const options = [
   { value: 'Beef', label: 'Beef' },
@@ -19,7 +20,7 @@ const options = [
 ];
 
 const SelectComp = () => {
-  const { handleSelect } = useContext(Context);
+  const { handleSelect } = useContext(AppContext);
   const handleOnChange = option => handleSelect(option.value);
 
   return (

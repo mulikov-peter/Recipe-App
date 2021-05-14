@@ -1,33 +1,38 @@
 import React, { useContext } from 'react';
 
-import Context from '../../context';
+import { AppContext } from '../../AppContext';
 
+import Loader from '../Loader/Loader';
 import IngredientList from '../Ingredient/IngredientList';
 
 import './Recipe.css';
 
 const Recipe = () => {
-  const { recipe } = useContext(Context);
+  const { recipe } = useContext(AppContext);
 
-  const {
-    strMeal: title,
-    strCategory: category,
-    strMealThumb: image_url,
-    strInstructions: instructions,
-    strSource: source,
-    strYoutube: youtube,
-    strArea: area,
-  } = recipe;
+  // const {
+  //   strMeal: title,
+  //   strCategory: category,
+  //   strMealThumb: image_url,
+  //   strInstructions: instructions,
+  //   strSource: source,
+  //   strYoutube: youtube,
+  //   strArea: area,
+  // } = recipe;
 
-  return (
-    <div className='recipe'>
-      <h1 className='recipe__title'>{title}</h1>
-      <img className='recipe__img' src={image_url} alt={title} />
+  const recipeComponent = recipe ? (
+    <>
+      <h1 className='recipe__title'>{recipe.strMeal}</h1>
+      <img
+        className='recipe__img'
+        src={recipe.strMealThumb}
+        alt={recipe.title}
+      />
 
-      {source ? (
+      {recipe.strSource ? (
         <a
           className='recipe__source'
-          href={source}
+          href={recipe.strSource}
           rel='noreferrer'
           target='_blank'
         >
@@ -36,16 +41,20 @@ const Recipe = () => {
       ) : null}
 
       <p>
-        Category: {category}. Traditionally for {area}.
+        Category: {recipe.strCategory}. Traditionally for {recipe.strArea}.
       </p>
 
       <IngredientList />
-      <p className='recipe__instructions'>{instructions}</p>
-      <a href={youtube} rel='noreferrer' target='_blank'>
+      <p className='recipe__instructions'>{recipe.strInstructions}</p>
+      <a href={recipe.strYoutube} rel='noreferrer' target='_blank'>
         Recipe on youtube
       </a>
-    </div>
+    </>
+  ) : (
+    <Loader />
   );
+
+  return <div className='recipe'>{recipeComponent}</div>;
 };
 
 export default Recipe;

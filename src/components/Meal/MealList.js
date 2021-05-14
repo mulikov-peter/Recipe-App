@@ -1,27 +1,22 @@
 import React, { useContext } from 'react';
 
-import Context from '../../context';
+import { AppContext } from '../../AppContext';
 
+import Loader from '../Loader/Loader';
 import Meal from './Meal';
 
 const MealList = () => {
-  // const { meals } = useContext(Context);
-  // const mealsList = meals.map(meal => <Meal key={meal.idMeal} meal={meal} />);
+  const { meals } = useContext(AppContext);
 
-  // return (
-  //   <div className='meals'>
-  //     <ul className='meal__list'>{mealsList}</ul>
-  //   </div>
-  // );
-  //=========================================
-
-  const { meals } = useContext(Context);
-
-  const mealsList = meals.map(meal => <Meal key={meal.idMeal} meal={meal} />);
+  const mealsList = meals.length ? (
+    meals.map(meal => <Meal key={meal.idMeal} meal={meal} />)
+  ) : (
+    <Loader />
+  );
 
   return (
     <div className='meals'>
-      <ul className='meal__list'>{mealsList}</ul>{' '}
+      <ul className='meal__list'>{mealsList}</ul>
     </div>
   );
 };

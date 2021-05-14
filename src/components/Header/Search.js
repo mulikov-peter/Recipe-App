@@ -3,13 +3,14 @@ import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import Context from '../../context';
+// import Context from '../../context';
+import { AppContext } from '../../AppContext';
 
 const Search = () => {
-  const { handleSearch } = useContext(Context);
+  const { handleSearch } = useContext(AppContext);
   const [inputValue, setInputValue] = useState('');
 
-  const search = <FontAwesomeIcon icon={faSearch} />;
+  const searchIcon = <FontAwesomeIcon icon={faSearch} />;
 
   const handleOnChange = e => setInputValue(e.target.value);
 
@@ -33,7 +34,7 @@ const Search = () => {
         onChange={handleOnChange}
       />
       <span>|</span>
-      <button className='search__button'>{search}</button>
+      <button className='search__button'>{searchIcon}</button>
     </form>
   );
 };

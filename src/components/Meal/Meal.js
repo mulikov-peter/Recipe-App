@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import Context from '../../context';
+import { AppContext } from '../../AppContext';
 
 import Loader from '../Loader/Loader';
 
 import './Meal.css';
 
 const Meal = ({ meal }) => {
-  const { loading, handleOnClick } = useContext(Context);
+  const { loading, handleOnClick } = useContext(AppContext);
   const { idMeal: id, strMeal: title, strMealThumb: img_url } = meal;
 
   return (

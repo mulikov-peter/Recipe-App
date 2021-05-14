@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 
-import Context from '../../context';
+import { AppContext } from '../../AppContext';
 
 import Ingredient from './Ingredient';
 
 import './Ingredient.css';
 
 const IngredientList = () => {
-  const { recipe } = useContext(Context);
+  const { recipe } = useContext(AppContext);
 
   const ingredients = [];
   const measures = [];
