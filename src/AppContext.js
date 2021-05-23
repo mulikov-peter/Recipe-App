@@ -8,27 +8,12 @@ const AppProvider = ({ children }) => {
   const [meals, setMeals] = useState([]);
   const [recipe, setRecipe] = useState(null);
 
-  // Fetch recipes by category seafood
+  // Fetch recipes by category seafood & random recipe
   useEffect(() => {
-    const path = 'filter.php?c=Seafood';
-
-    (async () => {
-      const meals = await fetchData(path);
-
-      setMeals(meals);
-      setLoading(false);
-    })();
-  }, []);
-
-  // Fetch random recipe
-  useEffect(() => {
-    const path = 'random.php';
-
-    (async () => {
-      const recipe = await fetchData(path);
-
-      setRecipe(...recipe);
-    })();
+    Promise.all([
+      fetchData('filter.php?c=Seafood').then(setMeals),
+      fetchData('random.php').then(recipe => setRecipe(...recipe)),
+    ]).then(setLoading(false));
   }, []);
 
   // Handle select a meal by category
@@ -44,7 +29,7 @@ const AppProvider = ({ children }) => {
     })();
   };
 
-  // Hendle search recipe
+  // Handle search recipe
   const handleSearch = inputValue => {
     const path = `search.php?s=`;
 
