@@ -7,16 +7,17 @@
 
 .ingredient__list {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   list-style-type: none;
   color: chocolate;
 }
 
 .ingredient__item {
-  flex-grow: 1;
+  width: 12rem;
   text-align: center;
   font-size: 1.4rem;
-  margin: 2rem 2rem 0 0;
+  margin: 1rem;
 }
 
 .ingredient__item:hover {
