@@ -8,31 +8,17 @@ import IngredientList from '../Ingredient/IngredientList';
 import './Recipe.css';
 
 const Recipe = () => {
-  const { recipe } = useContext(AppContext);
+  const { recipe, isLoading, isRecipeLoading, error } = useContext(AppContext);
 
-  // const {
-  //   strMeal: title,
-  //   strCategory: category,
-  //   strMealThumb: image_url,
-  //   strInstructions: instructions,
-  //   strSource: source,
-  //   strYoutube: youtube,
-  //   strArea: area,
-  // } = recipe;
-
-  const recipeComponent = recipe ? (
+  let recipeComponent = recipe && (
     <>
-      <h1 className='recipe__title'>{recipe.strMeal}</h1>
-      <img
-        className='recipe__img'
-        src={recipe.strMealThumb}
-        alt={recipe.title}
-      />
+      <h1 className='recipe__title'>{recipe.title}</h1>
+      <img className='recipe__img' src={recipe.image_url} alt={recipe.title} />
 
       {recipe.strSource ? (
         <a
           className='recipe__source'
-          href={recipe.strSource}
+          href={recipe.source}
           rel='noreferrer'
           target='_blank'
         >
@@ -41,20 +27,20 @@ const Recipe = () => {
       ) : null}
 
       <p>
-        Category: {recipe.strCategory}. Traditionally for {recipe.strArea}.
+        Category: {recipe.category}. Traditionally for {recipe.area}.
       </p>
 
       <IngredientList />
-      <p className='recipe__instructions'>{recipe.strInstructions}</p>
-      <a href={recipe.strYoutube} rel='noreferrer' target='_blank'>
-        Recipe on youtube
+      <p className='recipe__instructions'>{recipe.instructions}</p>
+      <a href={recipe.youtube} rel='noreferrer' target='_blank'>
+        Recipe on YouTube
       </a>
     </>
-  ) : (
-    <Loader />
   );
 
-  return <div className='recipe'>{recipeComponent}</div>;
+  const content = isRecipeLoading && isLoading ? <Loader /> : recipeComponent;
+
+  return <div className='recipe'>{error ? <h2>{error}</h2> : content}</div>;
 };
 
 export default Recipe;

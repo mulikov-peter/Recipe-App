@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-// import Context from '../../context';
 import { AppContext } from '../../AppContext';
 
 const Search = () => {

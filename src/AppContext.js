@@ -1,62 +1,119 @@
 import React, { createContext, useState, useEffect } from 'react';
-import fetchData from './fetchData';
+// import fetchData from './fetchData';
+
+import useHttp from './hooks/useHttp';
 
 export const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-  const [loading, setLoading] = useState(true);
   const [meals, setMeals] = useState([]);
   const [recipe, setRecipe] = useState(null);
+  const [isRecipeLoading, setIsRecipeLoading] = useState(false);
+  const [isMealLoading, setIsMealLoading] = useState(false);
 
-  // Fetch recipes by category seafood & random recipe
+  const { isLoading, error, sendRequest: fetchData } = useHttp();
+
+  // Fetching random meal-recipe & seafood category of meal
   useEffect(() => {
+    setIsMealLoading(true);
+    setIsRecipeLoading(true);
+
     Promise.all([
-      fetchData('filter.php?c=Seafood').then(setMeals),
-      fetchData('random.php').then(recipe => setRecipe(...recipe)),
-    ]).then(setLoading(false));
-  }, []);
+      fetchData(
+        {
+          url: `https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood`,
+        },
+        recObj => {
+          setMeals(recObj);
+          setIsMealLoading(false);
+        }
+      ),
+      fetchData(
+        {
+          url: `https://www.themealdb.com/api/json/v1/1/random.php`,
+        },
+        recObj => {
+          setRecipe(...recObj);
+          setIsRecipeLoading(false);
+        }
+      ),
+    ]);
+  }, [fetchData]);
 
-  // Handle select a meal by category
+  // Handle select a meal by category - search by category
   const handleSelect = selectedOption => {
-    const path = 'filter.php?c=';
+    setIsMealLoading(true);
 
-    setLoading(true);
-    (async () => {
-      const meals = await fetchData(`${path}${selectedOption}`);
-
-      setMeals(meals);
-      setLoading(false);
-    })();
+    fetchData(
+      {
+        url: `https://www.themealdb.com/api/json/v1/1/filter.php?c=${selectedOption}`,
+      },
+      recObj => {
+        setMeals(recObj);
+        setIsMealLoading(false);
+      }
+    );
   };
 
-  // Handle search recipe
+  // Handle search recipe - search by meal name
   const handleSearch = inputValue => {
-    const path = `search.php?s=`;
+    // setIsMealLoading(true);
+    setIsRecipeLoading(true);
+    fetchData(
+      {
+        url: `https://www.themealdb.com/api/json/v1/1/search.php?s=${inputValue}`,
+      },
+      recObj => {
+        setRecipe(...recObj);
+        setIsRecipeLoading(false);
+      }
+    );
 
-    (async () => {
-      const recipe = await fetchData(`${path}${inputValue}`);
-
-      setRecipe(...recipe);
-    })();
+    // Promise.all([
+    //   fetchData(
+    //     {
+    //       url: `https://www.themealdb.com/api/json/v1/1/search.php?s=${inputValue}`,
+    //     },
+    //     recObj => {
+    //       setRecipe(...recObj);
+    //       setIsRecipeLoading(false);
+    //     }
+    //   ),
+    //   fetchData(
+    //     {
+    //       url: `https://www.themealdb.com/api/json/v1/1/search.php?s=${inputValue}`,
+    //     },
+    //     recObj => {
+    //       setMeals(recObj);
+    //       setIsMealLoading(false);
+    //     }
+    //   ),
+    // ]);
   };
 
-  // Click on meal
+  // Click on meal - search by id
   const handleOnClick = id => {
-    const path = `lookup.php?i=`;
-
-    (async () => {
-      const recipe = await fetchData(`${path}${id}`);
-
-      setRecipe(...recipe);
-    })();
+    setIsRecipeLoading(true);
+    fetchData(
+      {
+        url: `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
+      },
+      recObj => {
+        setRecipe(...recObj);
+        setIsRecipeLoading(false);
+      }
+    );
   };
 
   return (
     <AppContext.Provider
       value={{
-        loading,
+        isLoading,
+        isRecipeLoading,
+        isMealLoading,
         meals,
         recipe,
+        error,
         handleSelect,
         handleSearch,
         handleOnClick,

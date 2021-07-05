@@ -9,7 +9,7 @@ const MealList = () => {
   const { meals } = useContext(AppContext);
 
   const mealsList = meals.length ? (
-    meals.map(meal => <Meal key={meal.idMeal} meal={meal} />)
+    meals.map(meal => <Meal key={meal.id} meal={meal} />)
   ) : (
     <Loader />
   );
